@@ -1,10 +1,28 @@
-const catchAsync = require('../utils/catchAsync')
+const catchAsync = require('../utils/catchAsync');
+const authService = require('../services/auth.service');
+const userService = require('../services/user.service');
+const tokenService = require('../services/token.service');
+const httpStatus = require('http-status');
 
+const login = catchAsync(async (req, res) => {
+	const user = await authService.loginWithEmailAndPassword(req.body);
+	const token = await tokenService.generateToken(user?._id);
+	res.status(httpStatus.OK).send({
+		user,
+		token
+	});
+});
 
-const login = catchAsync(async(req,res) => {
-
-})
+const register = catchAsync(async (req, res) => {
+	const user = await userService.createUser(req.body);
+	const token = await tokenService.generateToken(user?._id);
+	res.status(httpStatus.CREATED).send({
+		user,
+		token
+	});
+});
 
 module.exports = {
-      login
-}
+	login,
+	register
+};

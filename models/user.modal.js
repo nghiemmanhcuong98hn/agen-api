@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
-const userSchema = mongoose.Schema(
+const UserSchema = mongoose.Schema(
 	{
 		name: {
 			type: String,
@@ -27,7 +27,6 @@ const userSchema = mongoose.Schema(
 			type: String,
 			required: true,
 			minLength: 8,
-			select: false,
 			validate: {
 				validator: function (v) {
 					return v.match(/\d/) || v.match(/[a-zA-Z]/);
@@ -41,22 +40,23 @@ const userSchema = mongoose.Schema(
 	}
 );
 
-userSchema.statics.isEmailTaken = async function (email) {
+UserSchema.statics.isEmailTaken = async function (email) {
 	const user = await this.findOne({ email });
 	return !!user;
 };
 
-userSchema.methods.isPasswordMatch = async function (password) {
-	return bcrypt.compare(password, this.password);
-};
+UserSchema.methods.comparePassword = async function (password) {
+	console.log(this);
+	return await bcrypt.compare(password, this.password)
+}
 
-userSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next) {
 	if (this.isModified('password')) {
 		this.password = await bcrypt.hash(this.password, 8);
 	}
 	next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
