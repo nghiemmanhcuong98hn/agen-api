@@ -12,6 +12,7 @@ const { authLimiter } = require('./middlewares/rateLimiter.js');
 const { errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const routes  =require('./routers')
+const cmsRoutes  =require('./routers/cms')
 
 const app = express();
 
@@ -51,6 +52,7 @@ if (config.env === 'production') {
 
 // api routes
 app.use('/', routes);
+app.use('/cms', cmsRoutes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

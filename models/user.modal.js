@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
+const roles = require('../configs/roles')
 
 const UserSchema = mongoose.Schema(
 	{
@@ -33,6 +34,11 @@ const UserSchema = mongoose.Schema(
 				},
 				message: () => 'Password must contain at least one letter and one number'
 			}
+		},
+		role:{
+			type: String,
+			enum : Object.values(roles),
+			default: roles.user
 		}
 	},
 	{
@@ -46,7 +52,6 @@ UserSchema.statics.isEmailTaken = async function (email) {
 };
 
 UserSchema.methods.comparePassword = async function (password) {
-	console.log(this);
 	return await bcrypt.compare(password, this.password)
 }
 
