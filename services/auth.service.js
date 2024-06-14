@@ -19,8 +19,7 @@ const loginWithEmailAndPassword = async body => {
 	if (!(await user.comparePassword(body.password))) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Mật khẩu không chính xác.');
 	}
-	const { password, ...userInfo } = user._doc;
-	return userInfo;
+	return user;
 };
 
 /**
@@ -38,8 +37,7 @@ const loginWithEmailAndPasswordCms = async body => {
 	if (!(await user.comparePassword(body.password))) {
 		throw new ApiError(httpStatus.BAD_REQUEST, 'Mật khẩu không chính xác.');
 	}
-	const { password, ...userInfo } = user._doc;
-	return userInfo;
+	return user;
 };
 
 module.exports = {

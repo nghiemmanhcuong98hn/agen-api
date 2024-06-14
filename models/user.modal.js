@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 const roles = require('../configs/roles')
+const messages = require('../configs/messages');
+const { toJSON, paginate } = require('./plugins');
 
 const UserSchema = mongoose.Schema(
 	{
@@ -21,7 +23,16 @@ const UserSchema = mongoose.Schema(
 				validator: function (v) {
 					return validator.isEmail(v);
 				},
-				message: props => `${props.value} invalid email!`
+				message: props => messages.validate.format.email
+			}
+		},
+		phone:{
+			type: String,
+			validate: {
+				validator: function (v) {
+					return validator.isMobilePhone(v);
+				},
+				message: props => messages.validate.format.phone
 			}
 		},
 		password: {
@@ -32,8 +43,9 @@ const UserSchema = mongoose.Schema(
 				validator: function (v) {
 					return v.match(/\d/) || v.match(/[a-zA-Z]/);
 				},
-				message: () => 'Password must contain at least one letter and one number'
-			}
+				message: () => messages.validate.format.password
+			},
+			private:true // used by the toJSON plugin
 		},
 		role:{
 			type: String,
@@ -45,6 +57,10 @@ const UserSchema = mongoose.Schema(
 		timestamps: true
 	}
 );
+
+// add plugin that converts mongoose to json
+UserSchema.plugin(toJSON);
+UserSchema.plugin(paginate);
 
 UserSchema.statics.isEmailTaken = async function (email) {
 	const user = await this.findOne({ email });
