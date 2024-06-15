@@ -42,7 +42,11 @@ const getUserById = async userId => {
  * @returns {Promise<User>}
  */
 const getListUser = async (filter,options) => {
-	return User.paginate(filter,options);
+	const filterObj = {
+		...filter,
+		name: { $regex: filter?.name ?? '', $options: 'i' }
+	}
+	return User.paginate(filterObj,options);
 };
 
 module.exports = {
