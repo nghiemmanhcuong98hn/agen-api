@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const User = require('../models/user.modal');
+const roles = require('../configs/roles');
 
 /**
  * create user
@@ -12,7 +13,7 @@ const createUser = async userBody => {
 	if (await User.isEmailTaken(userBody.email)) {
 		throw new ApiError(httpStatus.CONFLICT, 'Email này đã được sử dụng.');
 	}
-	const res = await User.create(userBody);
+	const res = await User.create({ ...userBody, role: roles.admin });
 	const { password, ...user } = res._doc;
 	return user;
 };
@@ -41,12 +42,8 @@ const getUserById = async userId => {
  * @param {Object} options
  * @returns {Promise<User>}
  */
-const getListUser = async (filter,options) => {
-	const filterObj = {
-		...filter,
-		name: { $regex: filter?.name ?? '', $options: 'i' }
-	}
-	return User.paginate(filterObj,options);
+const getListUser = async (filter, options) => {
+	return User.paginate(filter, options);
 };
 
 module.exports = {

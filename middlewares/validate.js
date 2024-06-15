@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const httpStatus = require('http-status');
-const pick = require('../utils/pick');
-const ApiError = require('../utils/ApiError');
+const { pick } = require('../utils/pick');
+const { privateKeys } = require('../configs/settings');
 
 const validate = schema => (req, res, next) => {
 	const validSchema = pick(schema, ['params', 'query', 'body']);
@@ -13,7 +13,11 @@ const validate = schema => (req, res, next) => {
 	if (error) {
 		const errors = error.details.reduce((acc, err) => {
 			const key = err.path[1];
-			acc[key] = err.message;
+			if (privateKeys.includes(key)) {
+				acc[`message`] = err.message;
+			} else {
+				acc[key] = err.message;
+			}
 			return acc;
 		}, {});
 		return res.status(httpStatus.BAD_REQUEST).json({ errors: errors });

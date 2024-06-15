@@ -6,5 +6,6 @@ const verifyToken = require('../../middlewares/verifyToken')
 const router = express.Router();
 
 router.get('/', verifyToken,validate(userValidation.listUser), userController.listUsers);
+router.post('/create', verifyToken,validate(userValidation.createUser), userController.createUser);
 
 module.exports = router;
