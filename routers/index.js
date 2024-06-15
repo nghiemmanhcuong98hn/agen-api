@@ -7,7 +7,7 @@ const routers = [
 	{
 		path: '/auth',
 		route: authRouter
-	}
+	},
 ]
 
 routers.forEach(route => {

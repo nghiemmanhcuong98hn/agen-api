@@ -35,8 +35,19 @@ const getUserById = async userId => {
 	return User.findById(userId);
 };
 
+/**
+ *
+ * @param {Object} filter
+ * @param {Object} options
+ * @returns {Promise<User>}
+ */
+const getListUser = async (filter,options) => {
+	return User.paginate(filter,options);
+};
+
 module.exports = {
 	createUser,
 	getUserByEmail,
-	getUserById
+	getUserById,
+	getListUser
 };

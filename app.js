@@ -51,8 +51,8 @@ if (config.env === 'production') {
 }
 
 // api routes
-app.use('/', routes);
-app.use('/cms', cmsRoutes);
+app.use('/api', routes);
+app.use('/api/cms', cmsRoutes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

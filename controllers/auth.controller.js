@@ -15,10 +15,11 @@ const login = catchAsync(async (req, res) => {
 
 const loginCms = catchAsync(async (req, res) => {
 	const user = await authService.loginWithEmailAndPasswordCms(req.body);
-	const token = await tokenService.generateToken(user?._id);
+	const {token,refreshToken} = await tokenService.generateTokens(user?._id);
 	res.status(httpStatus.OK).send({
 		user,
-		token
+		token,
+		refreshToken
 	});
 });
 

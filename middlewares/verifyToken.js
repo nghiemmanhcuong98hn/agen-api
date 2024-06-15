@@ -16,6 +16,12 @@ const verifyToken = (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(token, config.jwt.secret);
+		if(req.baseUrl.includes('api/cms') && decoded.role === 'user'){
+			res.status(httpStatus.FORBIDDEN).json({
+				success: false,
+				message: 'Invalid Token.'
+			});
+		}
 		req.userId = decoded.userId;
 		next();
 	} catch (error) {

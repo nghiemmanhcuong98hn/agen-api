@@ -3,7 +3,7 @@ const moment = require('moment');
 const config = require('../configs/config');
 const roles = require('../configs/roles');
 
-const generateToken = (userId, expiresIn,role = roles.user) => {
+const generateToken = (userId, expiresIn, role = roles.user) => {
 	const payload = {
 		userId,
 		role,
@@ -14,10 +14,19 @@ const generateToken = (userId, expiresIn,role = roles.user) => {
 	return jwt.sign(payload, config.jwt.secret);
 };
 
-const generateTokens = (userId, expiresIn) => {
-	
+const generateTokens = userId => {
+	const expiresInToken = moment().add(30, 'minutes').unix();
+	const expiresInRefreshToken = moment().add(1, 'month').unix();
+	const token = generateToken(userId, expiresInToken, roles.admin);
+	const refreshToken = generateToken(userId, expiresInRefreshToken, roles.admin);
+
+	return {
+		token,
+		refreshToken
+	};
 };
 
 module.exports = {
-	generateToken
+	generateToken,
+	generateTokens
 };
