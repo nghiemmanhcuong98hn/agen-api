@@ -15,8 +15,8 @@ const generateToken = (userId, expiresIn, role = roles.user) => {
 };
 
 const generateTokens = userId => {
-	const expiresInToken = moment().add(30, 'minutes').unix();
-	const expiresInRefreshToken = moment().add(1, 'month').unix();
+	const expiresInToken = moment().add(config.jwt.tokenExpirationMinutes, 'minutes').unix();
+	const expiresInRefreshToken = moment().add(config.jwt.refreshTokenExpirationDays, 'days').unix();
 	const token = generateToken(userId, expiresInToken, roles.admin);
 	const refreshToken = generateToken(userId, expiresInRefreshToken, roles.admin);
 

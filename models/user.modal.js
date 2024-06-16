@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
-const roles = require('../configs/roles')
+var mongooseDelete = require('mongoose-delete');
+const roles = require('../configs/roles');
 const messages = require('../configs/messages');
 const { toJSON, paginate } = require('./plugins');
 
@@ -26,7 +27,7 @@ const UserSchema = mongoose.Schema(
 				message: props => messages.validate.format.email
 			}
 		},
-		phone:{
+		phone: {
 			type: String,
 			validate: {
 				validator: function (v) {
@@ -45,13 +46,21 @@ const UserSchema = mongoose.Schema(
 				},
 				message: () => messages.validate.format.password
 			},
-			private:true // used by the toJSON plugin
+			private: true // used by the toJSON plugin
 		},
-		role:{
+		role: {
 			type: String,
-			enum : Object.values(roles),
+			enum: Object.values(roles),
 			default: roles.user
-		}
+		},
+		deleted: {
+			type: Boolean,
+			default: false
+		},
+		deletedAt: {
+			type: Date
+		},
+		deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 	},
 	{
 		timestamps: true
@@ -61,6 +70,7 @@ const UserSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 UserSchema.plugin(toJSON);
 UserSchema.plugin(paginate);
+UserSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true });
 
 UserSchema.statics.isEmailTaken = async function (email) {
 	const user = await this.findOne({ email });
@@ -68,8 +78,8 @@ UserSchema.statics.isEmailTaken = async function (email) {
 };
 
 UserSchema.methods.comparePassword = async function (password) {
-	return await bcrypt.compare(password, this.password)
-}
+	return await bcrypt.compare(password, this.password);
+};
 
 UserSchema.pre('save', async function (next) {
 	if (this.isModified('password')) {
