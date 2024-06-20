@@ -5,12 +5,13 @@ const userController = require('../../controllers/user.controller');
 const verifyToken = require('../../middlewares/verifyToken')
 const router = express.Router();
 
-router.get('/', verifyToken,validate(userValidation.listUser), userController.listUsers);
-router.get('/trash', verifyToken,validate(userValidation.listUser), userController.listTrashUsers);
-router.get('/export-excel',verifyToken, userController.exportUserToFileExcel);
-router.get('/:userId', verifyToken, userController.detailUser);
-router.post('/', verifyToken,validate(userValidation.createUser), userController.createUser);
-router.put('/:userId', verifyToken,validate(userValidation.updateUser), userController.updateUser);
-router.delete('/:userId', verifyToken, userController.deleteUser);
+router.get('/',validate(userValidation.listUser), userController.listUsers);
+router.get('/trash',validate(userValidation.listUser), userController.listTrashUsers);
+router.get('/export-excel', userController.exportUserToFileExcel);
+router.get('/:userId', userController.detailUser);
+router.post('/',validate(userValidation.createUser), userController.createUser);
+router.put('/:userId',validate(userValidation.updateUser), userController.updateUser);
+router.delete('/:userId', userController.deleteUser);
+router.delete('/destroy/:userId', userController.destroyUser);
 
 module.exports = router;

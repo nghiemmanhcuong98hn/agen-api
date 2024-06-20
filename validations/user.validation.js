@@ -13,7 +13,8 @@ const listUser = {
 		limit: Joi.string(),
 		page: Joi.string(),
 		createdAt: Joi.date(),
-		phone: Joi.string()
+		phone: Joi.string(),
+		sortBy: Joi.string(),
 	})
 };
 

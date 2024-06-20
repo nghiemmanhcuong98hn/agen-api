@@ -41,7 +41,6 @@ const getUserById = async userId => {
  * @param {Object} userBody
  * @return {Promise<User>}
  */
-
 const createUser = async userBody => {
 	if (await User.isEmailTaken(userBody.email)) {
 		throw new ApiError(httpStatus.CONFLICT, messages.validate.email_already_taken);
@@ -57,7 +56,6 @@ const createUser = async userBody => {
  * @param {Object} userBody
  * @return {Promise<User>}
  */
-
 const updateUser = async (userId, userBody) => {
 	const user = await getUserById(userId);
 
@@ -79,7 +77,7 @@ const deleteUser = async (deleteBy, userId) => {
 };
 
 /**
- *
+ * get List User
  * @param {Object} filter
  * @param {Object} options
  * @returns {Promise<User>}
@@ -89,7 +87,7 @@ const getListUser = async (filter, options) => {
 };
 
 /**
- *
+ * get List User Export
  * @param {Object} filter
  * @param {Object} options
  * @returns {Promise<User>}
@@ -114,13 +112,23 @@ const getListUserExport = async (filter, options) => {
 };
 
 /**
- *
+ * get List Trash User
  * @param {Object} filter
  * @param {Object} options
  * @returns {Promise<User>}
  */
 const getListTrashUser = async (filter, options) => {
+	// The 3rd argument allows getting only the middle trash list
 	return User.paginate(filter, options, true);
+};
+
+/**
+ * destroy user
+ * @param {String} userId
+ * @return {Promise<User>}
+ */
+const destroyUser = async (userId) => {
+	return await User.deleteOne({_id: userId});
 };
 
 module.exports = {
@@ -131,5 +139,6 @@ module.exports = {
 	updateUser,
 	deleteUser,
 	getListTrashUser,
-	getListUserExport
+	getListUserExport,
+	destroyUser
 };

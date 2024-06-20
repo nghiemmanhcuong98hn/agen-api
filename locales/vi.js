@@ -6,6 +6,8 @@ module.exports = {
 			password: 'Mật khẩu là bắt buộc.',
 			phone: 'Số điện thoại là bắt buộc.',
 			address: 'Địa chỉ là bắt buộc.',
+			brand_name: 'Tên thương hiệu là bắt buộc.',
+			file:'Không có tập tin nào được tải lên.'
 		},
 		format: {
 			email: 'Email không hợp lệ.',
@@ -21,13 +23,17 @@ module.exports = {
 		},
 		min: {
 			name: 'Tên người dùng phải có ít nhất {#limit} ký tự.',
+			brand_name: 'Tên thương hiệu phải có ít nhất {#limit} ký tự.',
 			address: 'Địa chỉ người dùng phải có ít nhất {#limit} ký tự.',
 		},
 		max: {
 			name: 'Tên người dùng không được quá {#limit} ký tự.',
+			brand_name: 'Tên thương hiệu không được quá {#limit} ký tự.',
 			address: 'Địa chỉ người dùng không được quá {#limit} ký tự.',
 		},
 		email_already_taken: 'Email này đã được sử dụng.',
-		user_notfound:'Không tìm thấy tài khoản.'
+		brand_name_already_taken:'Tên thương hiệu này đã được sử dụng.',
+		user_notfound:'Không tìm thấy tài khoản.',
+		brand_notfound:'Không tìm thấy thương hiệu.',
 	}
 };

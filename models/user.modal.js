@@ -5,6 +5,7 @@ var mongooseDelete = require('mongoose-delete');
 const roles = require('../configs/roles');
 const messages = require('../configs/messages');
 const { toJSON, paginate } = require('./plugins');
+const { mongooseDeleteOptions } = require('../configs/settings');
 
 const UserSchema = mongoose.Schema(
 	{
@@ -70,7 +71,7 @@ const UserSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 UserSchema.plugin(toJSON);
 UserSchema.plugin(paginate);
-UserSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true });
+UserSchema.plugin(mongooseDelete, mongooseDeleteOptions);
 
 UserSchema.statics.isEmailTaken = async function (email) {
 	const user = await this.findOne({ email });

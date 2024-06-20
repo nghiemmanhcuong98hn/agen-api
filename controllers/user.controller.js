@@ -1,6 +1,6 @@
 const catchAsync = require('../utils/catchAsync');
 const userService = require('../services/user.service');
-const exportService = require('../services/export.service');
+const exportService = require('../services/file.service');
 const httpStatus = require('http-status');
 const { pickFilter, pick } = require('../utils/pick');
 const { filterTypes } = require('../configs/settings');
@@ -17,9 +17,12 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-	const userId = req.params.userId;
-	const deleteBy = req.userId;
-	await userService.deleteUser(deleteBy,userId);
+	await userService.deleteUser(req.userId,req.params.userId);
+	res.status(httpStatus.OK).send(true);
+});
+
+const destroyUser = catchAsync(async (req, res) => {
+	await userService.destroyUser(req.params.userId);
 	res.status(httpStatus.OK).send(true);
 });
 
@@ -76,5 +79,6 @@ module.exports = {
 	deleteUser,
 	listTrashUsers,
 	detailUser,
-	exportUserToFileExcel
+	exportUserToFileExcel,
+	destroyUser
 };
