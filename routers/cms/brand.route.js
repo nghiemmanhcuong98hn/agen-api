@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/', validate(brandValidation.list), brandController.listBrand);
 router.get('/trash', validate(brandValidation.list), brandController.listTrashBrand);
+router.get('/export', validate(brandValidation.list), brandController.exportBrands);
 router.get('/:brandId', brandController.detailBrand);
 router.post('/', validate(brandValidation.create), brandController.createBrand);
 router.post('/import',upload.single('file'), brandController.importBrands);

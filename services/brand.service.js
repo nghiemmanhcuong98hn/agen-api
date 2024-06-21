@@ -4,6 +4,7 @@ const fileService = require('../services/file.service');
 const messages = require('../configs/messages');
 const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
+const makeOptions = require('../utils/makeOptions');
 
 /**
  * get brand by id
@@ -93,16 +94,47 @@ const getListTrashBrand = async (filter, options) => {
 
 /**
  * import file
- *
+ * @param {Object} file
+ *  @returns {Array<string>}
  */
 const importBrands = async file => {
+	const errors = [];
 	const brands = await fileService.importExcel(file);
-	const res = await Promise.all(
+
+	await Promise.all(
 		brands.map(brand => {
-			return Brand.create(brand);
+			return Brand.create(brand).catch(error =>
+				errors.push(
+					error?.keyValue?.name + ' ' + messages.validate.brand_name_already_taken
+				)
+			);
 		})
 	);
-	return res;
+	return errors;
+};
+
+/**
+ * get List Brand Export
+ * @param {Object} filter
+ * @param {Object} options
+ * @returns {Array<Brand>}
+ */
+const getListBrandExport = async (filter, options) => {
+	const { limit, skip, sort } = makeOptions(options);
+	let brands = await Brand.find(filter, options)
+		.lean()
+		.sort(sort)
+		.skip(skip)
+		.limit(limit);
+	brands = brands.map(brand => {
+		delete brand.__v;
+		return {
+			...brand,
+			_id: brand._id.toString(),
+			deletedBy: brand.deletedBy?.toString(),
+		};
+	});
+	return brands;
 };
 
 module.exports = {
@@ -113,5 +145,6 @@ module.exports = {
 	getListTrashBrand,
 	getBrandById,
 	destroyBrand,
-	importBrands
+	importBrands,
+	getListBrandExport
 };

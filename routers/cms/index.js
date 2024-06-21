@@ -14,11 +14,12 @@ const routers = [
 	},
 	{
 		path: '/user',
-		route: userRouter
+		route: userRouter,
 	},
 	{
 		path: '/brand',
-		route: brandRouter
+		route: brandRouter,
+		ignoreToken: true
 	}
 ];
 

@@ -7,7 +7,9 @@ module.exports = {
 			phone: 'Số điện thoại là bắt buộc.',
 			address: 'Địa chỉ là bắt buộc.',
 			brand_name: 'Tên thương hiệu là bắt buộc.',
-			file:'Không có tập tin nào được tải lên.'
+			file:'Không có tập tin nào được tải lên.',
+			capacities:'Phải có ít nhất 1 dung tích được chọn.',
+			sex:'Phải có ít nhất 1 phần tử được chọn.',
 		},
 		format: {
 			email: 'Email không hợp lệ.',
