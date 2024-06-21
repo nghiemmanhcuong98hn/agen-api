@@ -10,6 +10,9 @@ module.exports = {
 			file:'Không có tập tin nào được tải lên.',
 			capacities:'Phải có ít nhất 1 dung tích được chọn.',
 			sex:'Phải có ít nhất 1 phần tử được chọn.',
+			product_name: 'Tên sản phẩm là bắt buộc.',
+			product_description: 'Mô tả sản phẩm là bắt buộc.',
+			product_brand: 'Thương hiệu sản phẩm là bắt buộc.',
 		},
 		format: {
 			email: 'Email không hợp lệ.',
@@ -25,11 +28,15 @@ module.exports = {
 		},
 		min: {
 			name: 'Tên người dùng phải có ít nhất {#limit} ký tự.',
+			product_name: 'Tên sản phẩm phải có ít nhất {#limit} ký tự.',
+			product_description: 'Mô tả sản phẩm phải có ít nhất {#limit} ký tự.',
 			brand_name: 'Tên thương hiệu phải có ít nhất {#limit} ký tự.',
 			address: 'Địa chỉ người dùng phải có ít nhất {#limit} ký tự.',
 		},
 		max: {
 			name: 'Tên người dùng không được quá {#limit} ký tự.',
+			product_name: 'Tên sản phẩm không được quá {#limit} ký tự.',
+			product_description: 'Mô tả sản phẩm không được quá {#limit} ký tự.',
 			brand_name: 'Tên thương hiệu không được quá {#limit} ký tự.',
 			address: 'Địa chỉ người dùng không được quá {#limit} ký tự.',
 		},

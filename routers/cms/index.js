@@ -2,6 +2,7 @@ const express = require('express');
 const authRouter = require('./auth.route');
 const userRouter = require('./user.route');
 const brandRouter = require('./brand.route');
+const productRouter = require('./product.route');
 const verifyToken = require('../../middlewares/verifyToken');
 
 const router = express.Router();
@@ -19,7 +20,10 @@ const routers = [
 	{
 		path: '/brand',
 		route: brandRouter,
-		ignoreToken: true
+	},
+	{
+		path: '/product',
+		route: productRouter,
 	}
 ];
 

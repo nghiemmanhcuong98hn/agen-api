@@ -10,7 +10,15 @@ mongoose.plugin(slug);
 const ProductSchema = mongoose.Schema({
 	name: {
 		type: String,
-		max: 1000,
+		min: 5,
+		max: 500,
+		required: true,
+		trim: true
+	},
+	description:{
+		type: String,
+		min: 5,
+		max: 2000,
 		required: true,
 		trim: true
 	},
@@ -46,7 +54,7 @@ const ProductSchema = mongoose.Schema({
 	},
 	topScent: {
 		type: String,
-            required: true
+		required: true
 	},
 	middleScent: {
 		type: String
@@ -54,27 +62,70 @@ const ProductSchema = mongoose.Schema({
 	finalScent: {
 		type: String
 	},
-      releaseDate:{
-            type: String,
-            required: true
-      },
-      sex:{
-            type: [String],
-            enum: ['nam', 'nữ','unisex'],
-            validate: {
+	releaseDate: {
+		type: String,
+		required: true
+	},
+	sex: {
+		type: [String],
+		enum: ['nam', 'nữ', 'unisex'],
+		validate: {
 			validator: function (v) {
 				return v.length > 0;
 			},
 			message: () => messages.validate.required.sex
 		}
-      },
-      age:{
-            type: Number,
+	},
+	age: {
+		type: Number,
 		required: true
-      },
-      odorRetention:{
-            
-      },
+	},
+	odorRetention: {
+		form: {
+			type: Number,
+			required: true
+		},
+		to: {
+			type: Number,
+			required: true
+		}
+	},
+	season:{
+		spring:{
+			type: Number,
+			required: true
+		},
+		summer:{
+			type: Number,
+			required: true
+		},
+		autumn:{
+			type: Number,
+			required: true
+		},
+		winter:{
+			type: Number,
+			required: true
+		},
+	},
+	times:{
+		day:{
+			type: Number,
+			required: true
+		},
+		night:{
+			type: Number,
+			required: true
+		},
+	},
+	popular: {
+		type: Boolean,
+		default: false
+	},
+	new: {
+		type: Boolean,
+		default: false
+	},
 	slug: { type: String, slug: 'name', unique: true },
 	deleted: {
 		type: Boolean,
