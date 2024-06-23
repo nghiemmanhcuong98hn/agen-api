@@ -5,6 +5,7 @@ const brandRouter = require('./brand.route');
 const productRouter = require('./product.route');
 const blogCategoryRouter = require('./blog_category.route');
 const blogRouter = require('./blog.route');
+const contactRouter = require('./contact.route');
 const verifyToken = require('../../middlewares/verifyToken');
 
 const router = express.Router();
@@ -34,6 +35,10 @@ const routers = [
 	{
 		path: '/blog',
 		route: blogRouter,
+	},
+	{
+		path: '/contact',
+		route: contactRouter,
 	}
 ];
 
