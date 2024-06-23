@@ -23,7 +23,7 @@ const getBlogById = async blogId => {
 
 /**
  * create blog
- * @param {Object} body
+ * @param {Object} {body,image,author}
  * @returns {Promise<Blog>}
  */
 const createBlog = async ({body,image,author}) => {
@@ -37,8 +37,7 @@ const createBlog = async ({body,image,author}) => {
 
 /**
  * create blog
- * @param {ObjectId} blogId
- * @param {Object} body
+ * @param {Object} {body,image,author}
  * @returns {Promise<Blog>}
  */
 const updateBlog = async ({blogId, body,image}) => {

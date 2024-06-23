@@ -10,6 +10,9 @@ module.exports = {
 			phone: 'Số điện thoại là bắt buộc.',
 			address: 'Địa chỉ là bắt buộc.',
 			brand_name: 'Tên thương hiệu là bắt buộc.',
+			contact_name: 'Tên người gửi là bắt buộc.',
+			contact_content: 'Nội dung liên hệ là bắt buộc.',
+			contact_is_reply: 'Trạng thái trả lời liên hệ là bắt buộc.',
 			blog_category_name: 'Tên danh mục bài viết là bắt buộc.',
 			product_name: 'Tên sản phẩm là bắt buộc.',
 			product_description: 'Mô tả sản phẩm là bắt buộc.',
@@ -95,6 +98,7 @@ module.exports = {
 			product_description: 'Mô tả sản phẩm không được quá {#limit} ký tự.',
 			blog_category_name: 'Tên danh mục bài viết không được quá {#limit} ký tự.',
 			blog_title:'Tiếu đề bài viết không được quá {#limit} ký tự.',
+			contact_content:'Nội dung liên hệ không được quá {#limit} ký tự.',
 		},
 		file:{
 			max_size:`Tệp quá lớn. Kích thước tối đa là ${config.cloudinary.limitFileSize}MB.`,
@@ -105,12 +109,13 @@ module.exports = {
 		email_already_taken: 'Email này đã được sử dụng.',
 		brand_name_already_taken:'Tên thương hiệu này đã được sử dụng.',
 		blog_category_name_already_taken:'Tên danh mục bài viết này đã được sử dụng.',
+		token_invalid:'Mã token không hợp lệ.',
 		user_notfound:'Không tìm thấy tài khoản.',
 		brand_notfound:'Không tìm thấy thương hiệu.',
 		product_notfound:'Không tìm thấy sản phẩm.',
 		token_notfound:'Không tìm thấy mã token truy cập.',
 		blog_category_notfound:'Không tìm thấy danh mục bài viết.',
 		blog_notfound:'Không tìm thấy bài viết.',
-		token_invalid:'Mã token không hợp lệ.',
+		contact_notfound:'Không tìm thấy liên hệ nào.',
 	}
 };

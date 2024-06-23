@@ -82,7 +82,7 @@ const getListBrands = async (filter, options) => {
 };
 
 /**
- * get list brands
+ * get list trash brands
  * @param {Object} filter
  * @param {Object} options
  * @returns {Promise<Brand[]>}
