@@ -77,7 +77,7 @@ const destroyBrand = async brandId => {
  * @param {Object} options
  * @returns {Promise<Brand[]>}
  */
-const getListBrand = async (filter, options) => {
+const getListBrands = async (filter, options) => {
 	return Brand.paginate(filter, options);
 };
 
@@ -87,7 +87,7 @@ const getListBrand = async (filter, options) => {
  * @param {Object} options
  * @returns {Promise<Brand[]>}
  */
-const getListTrashBrand = async (filter, options) => {
+const getListTrashBrands = async (filter, options) => {
 	// The 3rd argument allows getting only the middle trash list
 	return Brand.paginate(filter, options, true);
 };
@@ -102,13 +102,15 @@ const importBrands = async file => {
 	const brands = await fileService.importExcel(file);
 
 	await Promise.all(
-		brands.map(brand => {
-			return Brand.create(brand).catch(error =>
-				errors.push(
-					error?.keyValue?.name + ' ' + messages.validate.brand_name_already_taken
-				)
-			);
-		})
+		brands
+			.map(i => ({ name: i.name, image: i.image, char: i.char }))
+			.map(brand => {
+				return Brand.create(brand).catch(error =>
+					errors.push(
+						error?.keyValue?.name + ' ' + messages.validate.brand_name_already_taken
+					)
+				);
+			})
 	);
 	return errors;
 };
@@ -121,30 +123,36 @@ const importBrands = async file => {
  */
 const getListBrandExport = async (filter, options) => {
 	const { limit, skip, sort } = makeOptions(options);
-	let brands = await Brand.find(filter, options)
-		.lean()
-		.sort(sort)
-		.skip(skip)
-		.limit(limit);
+	let brands = await Brand.find(filter, options).lean().sort(sort).skip(skip).limit(limit);
 	brands = brands.map(brand => {
 		delete brand.__v;
 		return {
 			...brand,
 			_id: brand._id.toString(),
-			deletedBy: brand.deletedBy?.toString(),
+			deletedBy: brand.deletedBy?.toString()
 		};
 	});
 	return brands;
 };
 
+/**
+ * restore brand
+ * @param {String} brandId
+ * @return {Promise<>}
+ */
+const restoreBrand = async (brandId) => {
+	return await Brand.restore({_id: brandId});
+};
+
 module.exports = {
-	getListBrand,
+	getListBrands,
 	createBrand,
 	updateBrand,
 	deleteBrand,
-	getListTrashBrand,
+	getListTrashBrands,
 	getBrandById,
 	destroyBrand,
 	importBrands,
-	getListBrandExport
+	getListBrandExport,
+	restoreBrand
 };

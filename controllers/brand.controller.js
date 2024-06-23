@@ -5,10 +5,10 @@ const brandService = require('../services/brand.service');
 const fileService = require('../services/file.service');
 const { pickFilter, pick } = require('../utils/pick');
 
-const listBrand = catchAsync(async (req, res) => {
+const listBrands = catchAsync(async (req, res) => {
 	const filter = pickFilter(req.query, [{ key: 'name', type: filterTypes.search }, 'char']);
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
-	const brands = await brandService.getListBrand(filter, options);
+	const brands = await brandService.getListBrands(filter, options);
 	res.status(httpStatus.OK).send(brands);
 });
 
@@ -34,10 +34,10 @@ const destroyBrand = catchAsync(async (req, res) => {
 	res.status(httpStatus.OK).send(true);
 });
 
-const listTrashBrand = catchAsync(async (req, res) => {
+const listTrashBrands = catchAsync(async (req, res) => {
 	const filter = pickFilter(req.query, [{ key: 'name', type: filterTypes.search }, 'char']);
 	const options = pick(req.query, ['sortBy', 'limit', 'page']);
-	const brands = await brandService.getListTrashBrand(filter, options);
+	const brands = await brandService.getListTrashBrands(filter, options);
 	res.status(httpStatus.OK).send(brands);
 });
 
@@ -66,14 +66,21 @@ const exportBrands  = catchAsync(async (req, res) => {
 	res.send(excelBuffer);
 })
 
+const restoreBrand = catchAsync(async (req, res) => {
+	const brandId = req.params.brandId;
+	await brandService.restoreBrand(brandId);
+	res.status(httpStatus.OK).send(true);
+});
+
 module.exports = {
-	listBrand,
+	listBrands,
 	createBrand,
 	updateBrand,
 	deleteBrand,
-	listTrashBrand,
+	listTrashBrands,
 	detailBrand,
 	destroyBrand,
 	importBrands,
-	exportBrands
+	exportBrands,
+	restoreBrand
 };

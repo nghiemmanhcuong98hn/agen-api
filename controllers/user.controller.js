@@ -58,6 +58,12 @@ const detailUser = catchAsync(async (req, res) => {
 	res.status(httpStatus.OK).send(user);
 })
 
+const restoreUser = catchAsync(async (req, res) => {
+	const userId = req.params.userId;
+	await userService.restoreUser(userId);
+	res.status(httpStatus.OK).send(true);
+})
+
 const exportUserToFileExcel  = catchAsync(async (req, res) => {
 	const filter = pickFilter(req.query, [
 		{ key: 'name', type: filterTypes.search },
@@ -80,5 +86,6 @@ module.exports = {
 	listTrashUsers,
 	detailUser,
 	exportUserToFileExcel,
-	destroyUser
+	destroyUser,
+	restoreUser
 };

@@ -10,6 +10,7 @@ router.get('/export', userController.exportUserToFileExcel);
 router.get('/:userId', userController.detailUser);
 router.post('/',validate(userValidation.createUser), userController.createUser);
 router.put('/:userId',validate(userValidation.updateUser), userController.updateUser);
+router.put('/restore/:userId', userController.restoreUser);
 router.delete('/:userId', userController.deleteUser);
 router.delete('/destroy/:userId', userController.destroyUser);
 

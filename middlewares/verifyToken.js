@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
 const config = require('../configs/config');
+const messages = require('../configs/messages');
 
 const verifyToken = (req, res, next) => {
 	// get token form header
@@ -10,7 +11,7 @@ const verifyToken = (req, res, next) => {
 	if (!token) {
 		res.status(httpStatus.BAD_REQUEST).json({
 			success: false,
-			message: 'Access token not found.'
+			message: messages.validate.token_notfound
 		});
 	}
 
@@ -19,7 +20,7 @@ const verifyToken = (req, res, next) => {
 		if(req.baseUrl.includes('api/cms') && decoded.role === 'user'){
 			res.status(httpStatus.FORBIDDEN).json({
 				success: false,
-				message: 'Invalid Token.'
+				message: messages.validate.token_invalid
 			});
 		}
 		req.userId = decoded.userId;
@@ -27,7 +28,7 @@ const verifyToken = (req, res, next) => {
 	} catch (error) {
 		res.status(httpStatus.FORBIDDEN).json({
 			success: false,
-			message: 'Invalid Token.'
+			message: messages.validate.token_invalid
 		});
 	}
 };

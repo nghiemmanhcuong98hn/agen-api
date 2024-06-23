@@ -1,3 +1,5 @@
+const config = require('../configs/config')
+
 module.exports = {
 	validate: {
 		required: {

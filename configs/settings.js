@@ -18,8 +18,25 @@ const mongooseDeleteOptions = {
 	]
 };
 
+const capacitiesEnum = [
+	'10ml',
+	'25ml',
+	'30ml',
+	'50ml',
+	'75ml',
+	'100ml',
+	'125ml',
+	'150ml',
+	'175ml',
+	'200ml'
+];
+
+const sexEnum = ['nam', 'nữ', 'unisex'];
+
 module.exports = {
 	privateKeys,
 	filterTypes,
-	mongooseDeleteOptions
+	mongooseDeleteOptions,
+	capacitiesEnum,
+	sexEnum
 };

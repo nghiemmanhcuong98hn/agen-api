@@ -21,7 +21,12 @@ const envSchema = Joi.object().keys({
 	SMTP_PORT: Joi.number().description('port to connect to the email server'),
 	SMTP_USERNAME: Joi.string().description('username for email server'),
 	SMTP_PASSWORD: Joi.string().description('password for email server'),
-	EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app')
+	EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
+	CLOUDINARY_NAME: Joi.string().description('the from field in the cloudinary'),
+	CLOUDINARY_KEY: Joi.string().description('the from field in the cloudinary'),
+	CLOUDINARY_SECRET: Joi.string().description('the from field in the cloudinary'),
+	CLOUDINARY_LIMIT_FILES:Joi.number().description('the limit file when multiple upload'),
+	CLOUDINARY_LIMIT_FILE_SIZE:Joi.number().description('the limit file size when upload'),
 });
 
 const { value: envVars } = envSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -41,6 +46,13 @@ module.exports = {
 		refreshTokenExpirationDays: envVars.JWT_REFRESH_TOKEN_EXPIRATION_DAYS,
 		tokenExpirationMinutes: envVars.JWT_TOKEN_EXPIRATION_MINUTES,
 		resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES
+	},
+	cloudinary:{
+		name:envVars.CLOUDINARY_NAME,
+		key:envVars.CLOUDINARY_KEY,
+		secret:envVars.CLOUDINARY_SECRET,
+		limitFiles:envVars.CLOUDINARY_LIMIT_FILES,
+		limitFileSize:envVars.CLOUDINARY_LIMIT_FILE_SIZE
 	},
 	email: {
 		smtp: {

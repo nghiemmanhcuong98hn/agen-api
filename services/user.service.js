@@ -131,6 +131,15 @@ const destroyUser = async (userId) => {
 	return await User.deleteOne({_id: userId});
 };
 
+/**
+ * restore user
+ * @param {String} userId
+ * @return {Promise<>}
+ */
+const restoreUser = async (userId) => {
+	return await User.restore({_id: userId});
+};
+
 module.exports = {
 	createUser,
 	getUserByEmail,
@@ -140,5 +149,6 @@ module.exports = {
 	deleteUser,
 	getListTrashUser,
 	getListUserExport,
-	destroyUser
+	destroyUser,
+	restoreUser
 };
