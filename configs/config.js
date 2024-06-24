@@ -27,6 +27,10 @@ const envSchema = Joi.object().keys({
 	CLOUDINARY_SECRET: Joi.string().description('the from field in the cloudinary'),
 	CLOUDINARY_LIMIT_FILES:Joi.number().description('the limit file when multiple upload'),
 	CLOUDINARY_LIMIT_FILE_SIZE:Joi.number().description('the limit file size when upload'),
+	MOMO_ACCESS_KEY:Joi.string().description('MOMO access key'),
+	MOMO_SECRET_KEY:Joi.string().description('MOMO secret key'),
+	MOMO_REDIRECT_URL:Joi.string().description('The redirect url when payment success'),
+	MOMO_PAYMENT_API:Joi.string().description('The api payment developer or production'),
 });
 
 const { value: envVars } = envSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -40,6 +44,12 @@ module.exports = {
 			useNewUrlParser: true,
 			useUnifiedTopology: true
 		}
+	},
+	momo: {
+		accessKey:envVars.MOMO_ACCESS_KEY,
+		secretKey:envVars.MOMO_SECRET_KEY,
+		redirectUrl:envVars.MOMO_REDIRECT_URL,
+		paymentApi:envVars.MOMO_PAYMENT_API,
 	},
 	jwt: {
 		secret: envVars.JWT_SECRET,

@@ -142,7 +142,7 @@ const ProductSchema = mongoose.Schema(
 			type: Boolean,
 			default: false
 		},
-		slug: { type: String, slug: 'name', unique: true },
+		slug: { type: String, slug: 'name' },
 		deleted: {
 			type: Boolean,
 			default: false

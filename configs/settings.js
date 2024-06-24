@@ -32,11 +32,32 @@ const capacitiesEnum = [
 ];
 
 const sexEnum = ['nam', 'nữ', 'unisex'];
+const orderPaymentStatus = {
+	1:'Chờ thanh toán',
+	2:'Đã thanh toán',
+}
+
+const orderTransportStatus = {
+	1:'Chờ xác nhận',
+	2:'Chờ vận chuyển',
+	3:'Đang vận chuyển',
+	4:'Giao hàng thành công',
+	5:'Hoàn hàng',
+}
+
+const paymentMethods = {
+	1:'MOMO',
+	2:'Thanh toán khi nhân hàng',
+	3:'Chuyển khoản'
+}
 
 module.exports = {
 	privateKeys,
 	filterTypes,
 	mongooseDeleteOptions,
 	capacitiesEnum,
-	sexEnum
+	sexEnum,
+	orderPaymentStatus,
+	orderTransportStatus,
+	paymentMethods
 };
