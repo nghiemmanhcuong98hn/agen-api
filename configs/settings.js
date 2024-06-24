@@ -47,8 +47,9 @@ const orderTransportStatus = {
 
 const paymentMethods = {
 	1:'MOMO',
-	2:'Thanh toán khi nhân hàng',
-	3:'Chuyển khoản'
+	2:'ZALOPAY',
+	3:'Thanh toán khi nhân hàng',
+	4:'Chuyển khoản'
 }
 
 module.exports = {

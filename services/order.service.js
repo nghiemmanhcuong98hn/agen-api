@@ -1,6 +1,6 @@
 const Order = require('../models/order.modal');
 const { paymentMethods } = require('../configs/settings');
-const { paymentMomo } = require('./payment.service');
+const { paymentMomo, zaloPayment } = require('./payment.service');
 const randomstring = require('randomstring');
 
 const createOrder = async body => {
@@ -16,6 +16,8 @@ const createOrder = async body => {
 			orderValue: order?.orderValue
 		};
 		return await paymentMomo(data);
+	}else if(body.paymentMethod === paymentMethods[2]) {
+		return await zaloPayment();
 	}
 	return order;
 };
