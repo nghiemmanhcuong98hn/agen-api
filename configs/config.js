@@ -25,12 +25,17 @@ const envSchema = Joi.object().keys({
 	CLOUDINARY_NAME: Joi.string().description('the from field in the cloudinary'),
 	CLOUDINARY_KEY: Joi.string().description('the from field in the cloudinary'),
 	CLOUDINARY_SECRET: Joi.string().description('the from field in the cloudinary'),
-	CLOUDINARY_LIMIT_FILES:Joi.number().description('the limit file when multiple upload'),
-	CLOUDINARY_LIMIT_FILE_SIZE:Joi.number().description('the limit file size when upload'),
-	MOMO_ACCESS_KEY:Joi.string().description('MOMO access key'),
-	MOMO_SECRET_KEY:Joi.string().description('MOMO secret key'),
-	MOMO_REDIRECT_URL:Joi.string().description('The redirect url when payment success'),
-	MOMO_PAYMENT_API:Joi.string().description('The api payment developer or production'),
+	CLOUDINARY_LIMIT_FILES: Joi.number().description('the limit file when multiple upload'),
+	CLOUDINARY_LIMIT_FILE_SIZE: Joi.number().description('the limit file size when upload'),
+	PAYEMNT_CALLBACK_URL: Joi.string().description('The callback url when payment success'),
+	PAYEMNT_REDIRECT_URL: Joi.string().description('The rediect url when payment success'),
+	MOMO_ACCESS_KEY: Joi.string().description('MOMO access key'),
+	MOMO_SECRET_KEY: Joi.string().description('MOMO secret key'),
+	MOMO_PAYMENT_API: Joi.string().description('The api payment developer or production'),
+	ZALOPAY_APP_ID: Joi.string().description('zalo app id'),
+	ZALOPAY_KEY_1: Joi.string().description('zalo secret key 1'),
+	ZALOPAY_KEY_2: Joi.string().description('zalo secret key 2'),
+	ZALOPAY_PAYMENT_API: Joi.string().description('The api payment developer or production')
 });
 
 const { value: envVars } = envSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -38,6 +43,8 @@ const { value: envVars } = envSchema.prefs({ errors: { label: 'key' } }).validat
 module.exports = {
 	env: envVars.NODE_ENV,
 	port: envVars.PORT,
+	paymentCallbackUrl: envVars.PAYEMNT_CALLBACK_URL,
+	paymentRedirectUrl: envVars.PAYEMNT_REDIRECT_URL,
 	mongoose: {
 		url: envVars.MONGODB_URL,
 		options: {
@@ -46,10 +53,15 @@ module.exports = {
 		}
 	},
 	momo: {
-		accessKey:envVars.MOMO_ACCESS_KEY,
-		secretKey:envVars.MOMO_SECRET_KEY,
-		redirectUrl:envVars.MOMO_REDIRECT_URL,
-		paymentApi:envVars.MOMO_PAYMENT_API,
+		accessKey: envVars.MOMO_ACCESS_KEY,
+		secretKey: envVars.MOMO_SECRET_KEY,
+		paymentApi: envVars.MOMO_PAYMENT_API
+	},
+	zalo: {
+		appId: envVars.ZALOPAY_APP_ID,
+		key1: envVars.ZALOPAY_KEY_1,
+		key2: envVars.ZALOPAY_KEY_2,
+		paymentApi: envVars.ZALOPAY_PAYMENT_API
 	},
 	jwt: {
 		secret: envVars.JWT_SECRET,
@@ -57,12 +69,12 @@ module.exports = {
 		tokenExpirationMinutes: envVars.JWT_TOKEN_EXPIRATION_MINUTES,
 		resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES
 	},
-	cloudinary:{
-		name:envVars.CLOUDINARY_NAME,
-		key:envVars.CLOUDINARY_KEY,
-		secret:envVars.CLOUDINARY_SECRET,
-		limitFiles:envVars.CLOUDINARY_LIMIT_FILES,
-		limitFileSize:envVars.CLOUDINARY_LIMIT_FILE_SIZE
+	cloudinary: {
+		name: envVars.CLOUDINARY_NAME,
+		key: envVars.CLOUDINARY_KEY,
+		secret: envVars.CLOUDINARY_SECRET,
+		limitFiles: envVars.CLOUDINARY_LIMIT_FILES,
+		limitFileSize: envVars.CLOUDINARY_LIMIT_FILE_SIZE
 	},
 	email: {
 		smtp: {

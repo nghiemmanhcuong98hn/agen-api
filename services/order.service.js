@@ -9,15 +9,19 @@ const createOrder = async body => {
 		charset: 'alphanumeric'
 	});
 	const order = await Order.create({ ...body, orderId });
+	const data = {
+		orderId: order?.orderId,
+		products: order?.products,
+		requestId: order?._id,
+		orderValue: order?.orderValue,
+		username: order?.name,
+		email: order?.email,
+		phone: order?.phone,
+	};
 	if (body.paymentMethod === paymentMethods[1]) {
-		const data = {
-			orderId: order?.orderId,
-			requestId: order?._id,
-			orderValue: order?.orderValue
-		};
 		return await paymentMomo(data);
-	}else if(body.paymentMethod === paymentMethods[2]) {
-		return await zaloPayment();
+	} else if (body.paymentMethod === paymentMethods[2]) {
+		return await zaloPayment(data);
 	}
 	return order;
 };

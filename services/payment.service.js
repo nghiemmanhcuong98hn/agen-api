@@ -6,20 +6,33 @@ const ApiError = require('../utils/ApiError');
 const config = require('../configs/config');
 const moment = require('moment');
 
-const paymentMomo = async ({ orderId, products = [], userInfo = {}, orderValue, requestId }) => {
+const paymentMomo = async ({
+	orderId,
+	products = [],
+	username,
+	phone,
+	email,
+	orderValue,
+	requestId
+}) => {
 	//parameters
 	var accessKey = `${config.momo.accessKey}`;
 	var secretKey = `${config.momo.secretKey}`;
+	var redirectUrl = `${config.paymentRedirectUrl}`;
+	var ipnUrl = `${config.paymentCallbackUrl}`;
+	var userInfo = {"phoneNumber": phone, "email": email, "name": username};
+	var requestId = requestId;
 	var orderInfo = 'pay with MoMo';
 	var partnerCode = 'MOMO';
-	var redirectUrl = `${config.momo.redirectUrl}`;
-	var ipnUrl = `${config.momo.redirectUrl}`;
 	var requestType = 'payWithMethod';
 	var amount = orderValue?.toString();
-	var requestId = requestId;
+	var items = products?.map(item => {
+		return {
+			name: item?.productId.toString(),
+			quantity: item.quantity
+		};
+	});
 	var autoCapture = true;
-	var items = products;
-	var userInfo = userInfo;
 	var lang = 'vi';
 	var extraData = '';
 	var orderGroupId = '';
@@ -65,7 +78,9 @@ const paymentMomo = async ({ orderId, products = [], userInfo = {}, orderValue, 
 		autoCapture,
 		extraData,
 		orderGroupId,
-		signature
+		signature,
+		items,
+		userInfo
 	});
 
 	const options = {
@@ -85,40 +100,39 @@ const paymentMomo = async ({ orderId, products = [], userInfo = {}, orderValue, 
 	}
 };
 
-const zaloPayment = async () => {
-	const config = {
-		app_id: '2553',
-		key1: 'PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL',
-		key2: 'kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz',
-		endpoint: 'https://sb-openapi.zalopay.vn/v2/create'
-	};
-
+const zaloPayment = async ({ orderId, products = [], username, phone, email, orderValue }) => {
 	const embed_data = {
 		//sau khi hoàn tất thanh toán sẽ đi vào link này (thường là link web thanh toán thành công của mình)
-		redirecturl: 'https://phongthuytaman.com'
+		redirecturl: config.paymentRedirectUrl
 	};
 
-	const items = [];
-	const transID = Math.floor(Math.random() * 1000000);
+	const items = products?.map(item => {
+		return {
+			name: item?.productId.toString(),
+			quantity: item.quantity
+		};
+	});
 
 	const order = {
-		app_id: config.app_id,
-		app_trans_id: `${moment().format('YYMMDD')}_${transID}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+		app_id: `${config.zalo.appId}`,
+		app_trans_id: `${moment().format('YYMMDD')}_${orderId}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
 		app_user: 'user123',
 		app_time: Date.now(), // miliseconds
 		item: JSON.stringify(items),
 		embed_data: JSON.stringify(embed_data),
-		amount: 50000,
+		amount: orderValue,
 		//khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
 		//Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
-		callback_url: 'https://b074-1-53-37-194.ngrok-free.app/callback',
-		description: `Lazada - Payment for the order #${transID}`,
-		bank_code: ''
+		callback_url: `${config.paymentCallbackUrl}`,
+		description: `Zalo - Payment for the order #${orderId}`,
+		phone,
+		email,
+		title: 'Đơn hàng ' + username + '_' + moment(new Date()).format('yyyy-mm-dd HH:mm')
 	};
 
 	// appid|app_trans_id|appuser|amount|apptime|embeddata|item
 	const data =
-		config.app_id +
+		config.zalo.appId +
 		'|' +
 		order.app_trans_id +
 		'|' +
@@ -131,10 +145,10 @@ const zaloPayment = async () => {
 		order.embed_data +
 		'|' +
 		order.item;
-	order.mac = CryptoJS.HmacSHA256(data, config.key1).toString();
+	order.mac = CryptoJS.HmacSHA256(data, `${config.zalo.key1}`).toString();
 
 	try {
-		const result = await axios.post(config.endpoint, null, { params: order });
+		const result = await axios.post(`${config.zalo.paymentApi}`, null, { params: order });
 		return result.data;
 	} catch (error) {
 		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
