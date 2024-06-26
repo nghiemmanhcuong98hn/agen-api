@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const messages = require('../configs/messages.js');
-const { paymentMethods } = require('../configs/settings.js');
+const { paymentMethods, platformList } = require('../configs/settings.js');
 
 const list = {
 	query: Joi.object().keys({
@@ -33,14 +33,18 @@ const create = {
 			}),
 		products: Joi.alternatives()
 			.try(
-				Joi.array().min(1).items(Joi.object({
-					productId: Joi.string().required().messages({
-						'any.required': messages.validate.required.order_product_id
-					}),
-					quantity:Joi.number().min(1).messages({
-						'number.min': messages.validate.min.order_product_quantity,
-					})
-				}))
+				Joi.array()
+					.min(1)
+					.items(
+						Joi.object({
+							productId: Joi.string().required().messages({
+								'any.required': messages.validate.required.order_product_id
+							}),
+							quantity: Joi.number().min(1).messages({
+								'number.min': messages.validate.min.order_product_quantity
+							})
+						})
+					)
 			)
 			.required()
 			.messages({
@@ -70,6 +74,13 @@ const create = {
 			.messages({
 				'any.required': messages.validate.required.order_payment_method,
 				'any.only': messages.validate.format.order_payment_method
+			}),
+		platform: Joi.string()
+			.required()
+			.valid(...Object.values(platformList))
+			.messages({
+				'any.required': messages.validate.required.order_payment_platform,
+				'any.only': messages.validate.format.order_payment_platform
 			}),
 		orderValue: Joi.number().required().min(0).messages({
 			'number.min': messages.validate.min.order_value,

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const slug = require('mongoose-slug-generator');
 var mongooseDelete = require('mongoose-delete');
 const { toJSON, paginate } = require('./plugins');
+const autopopulate = require('mongoose-autopopulate');
 const { mongooseDeleteOptions } = require('../configs/settings');
 
 mongoose.plugin(slug);
@@ -32,7 +33,11 @@ const BrandSchema = mongoose.Schema(
 		deletedAt: {
 			type: Date
 		},
-		deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+		deletedBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			autopopulate: { select: ['name', 'email'] }
+		}
 	},
 	{
 		timestamps: true
@@ -42,6 +47,7 @@ const BrandSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 BrandSchema.plugin(toJSON);
 BrandSchema.plugin(paginate);
+BrandSchema.plugin(autopopulate);
 BrandSchema.plugin(mongooseDelete, mongooseDeleteOptions);
 
 BrandSchema.pre('save', async function (next) {

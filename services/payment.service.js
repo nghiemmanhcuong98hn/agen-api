@@ -7,7 +7,7 @@ const config = require('../configs/config');
 const moment = require('moment');
 
 const paymentMomo = async ({
-	orderId,
+	transactionId,
 	products = [],
 	username,
 	phone,
@@ -20,7 +20,7 @@ const paymentMomo = async ({
 	var secretKey = `${config.momo.secretKey}`;
 	var redirectUrl = `${config.paymentRedirectUrl}`;
 	var ipnUrl = `${config.paymentCallbackUrl}`;
-	var userInfo = {"phoneNumber": phone, "email": email, "name": username};
+	var userInfo = { phoneNumber: phone, email: email, name: username };
 	var requestId = requestId;
 	var orderInfo = 'pay with MoMo';
 	var partnerCode = 'MOMO';
@@ -38,7 +38,6 @@ const paymentMomo = async ({
 	var orderGroupId = '';
 
 	//before sign HMAC SHA256 with format
-	//accessKey=$accessKey&amount=$amount&extraData=$extraData&ipnUrl=$ipnUrl&orderId=$orderId&orderInfo=$orderInfo&partnerCode=$partnerCode&redirectUrl=$redirectUrl&requestId=$requestId&requestType=$requestType
 	var rawSignature =
 		'accessKey=' +
 		accessKey +
@@ -49,7 +48,7 @@ const paymentMomo = async ({
 		'&ipnUrl=' +
 		ipnUrl +
 		'&orderId=' +
-		orderId +
+		transactionId +
 		'&orderInfo=' +
 		orderInfo +
 		'&partnerCode=' +
@@ -69,7 +68,7 @@ const paymentMomo = async ({
 		storeId: 'MomoTestStore',
 		requestId,
 		amount,
-		orderId,
+		orderId: transactionId,
 		orderInfo,
 		redirectUrl,
 		ipnUrl,
@@ -100,10 +99,10 @@ const paymentMomo = async ({
 	}
 };
 
-const zaloPayment = async ({ orderId, products = [], username, phone, email, orderValue }) => {
+const zaloPayment = async ({ transactionId, products = [], username, phone, email, orderValue }) => {
 	const embed_data = {
 		//sau khi hoàn tất thanh toán sẽ đi vào link này (thường là link web thanh toán thành công của mình)
-		redirecturl: config.paymentRedirectUrl
+		redirecturl: `${config.paymentRedirectUrl}`
 	};
 
 	const items = products?.map(item => {
@@ -115,8 +114,8 @@ const zaloPayment = async ({ orderId, products = [], username, phone, email, ord
 
 	const order = {
 		app_id: `${config.zalo.appId}`,
-		app_trans_id: `${moment().format('YYMMDD')}_${orderId}`, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
-		app_user: 'user123',
+		app_trans_id: transactionId, // translation missing: vi.docs.shared.sample_code.comments.app_trans_id
+		app_user: 'Agen shop',
 		app_time: Date.now(), // miliseconds
 		item: JSON.stringify(items),
 		embed_data: JSON.stringify(embed_data),
@@ -124,7 +123,7 @@ const zaloPayment = async ({ orderId, products = [], username, phone, email, ord
 		//khi thanh toán xong, zalopay server sẽ POST đến url này để thông báo cho server của mình
 		//Chú ý: cần dùng ngrok để public url thì Zalopay Server mới call đến được
 		callback_url: `${config.paymentCallbackUrl}`,
-		description: `Zalo - Payment for the order #${orderId}`,
+		description: `Zalo - Payment for the order #${transactionId}`,
 		phone,
 		email,
 		title: 'Đơn hàng ' + username + '_' + moment(new Date()).format('yyyy-mm-dd HH:mm')

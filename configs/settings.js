@@ -14,7 +14,8 @@ const mongooseDeleteOptions = {
 		'findOneAndUpdate',
 		'findById',
 		'findOneAndDelete',
-		'create'
+		'create',
+		'countDocuments'
 	]
 };
 
@@ -33,23 +34,38 @@ const capacitiesEnum = [
 
 const sexEnum = ['nam', 'nữ', 'unisex'];
 const orderPaymentStatus = {
-	1:'Chờ thanh toán',
-	2:'Đã thanh toán',
+	confirm:'Chờ xác nhận',
+	pending:'Chờ thanh toán',
+	paid:'Đã thanh toán',
+	cancel:'Hủy thanh toán',
 }
 
 const orderTransportStatus = {
-	1:'Chờ xác nhận',
-	2:'Chờ vận chuyển',
-	3:'Đang vận chuyển',
-	4:'Giao hàng thành công',
-	5:'Hoàn hàng',
+	confirm:'Chờ xác nhận',
+	pending:'Chờ vận chuyển',
+	being:'Đang vận chuyển',
+	success:'Giao hàng thành công',
+	refund:'Hoàn hàng',
 }
 
 const paymentMethods = {
-	1:'MOMO',
-	2:'ZALOPAY',
-	3:'Thanh toán khi nhân hàng',
-	4:'Chuyển khoản'
+	momo:'MOMO',
+	zalo:'ZALOPAY',
+	cod:'Thanh toán khi nhận hàng',
+	transfer:'Chuyển khoản'
+}
+
+const platformList  = {
+	tiktok:'tiktok',
+	shoppe:'shoppe',
+	facebook:'facebook',
+	website:'website',
+	direct :'trực tiếp',
+}
+
+const filterStatisticalTablesTime = {
+	month:[],
+	year:[],
 }
 
 module.exports = {
@@ -60,5 +76,6 @@ module.exports = {
 	sexEnum,
 	orderPaymentStatus,
 	orderTransportStatus,
-	paymentMethods
+	paymentMethods,
+	platformList
 };

@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { toJSON, paginate } = require('./plugins');
 const messages = require('../configs/messages');
-const { orderTransportStatus, orderPaymentStatus, paymentMethods } = require('../configs/settings');
+const autopopulate = require('mongoose-autopopulate')
+const {
+	orderTransportStatus,
+	orderPaymentStatus,
+	paymentMethods,
+	platformList
+} = require('../configs/settings');
 
 const OrderSchema = mongoose.Schema(
 	{
@@ -37,7 +43,8 @@ const OrderSchema = mongoose.Schema(
 			{
 				productId: {
 					type: mongoose.Types.ObjectId,
-					ref: 'Product'
+					ref: 'Product',
+					autopopulate: true
 				},
 				quantity: {
 					type: Number,
@@ -70,6 +77,19 @@ const OrderSchema = mongoose.Schema(
 			required: true,
 			enum: Object.values(paymentMethods)
 		},
+		paymentStatus: {
+			type: String,
+			default: orderPaymentStatus.confirm
+		},
+		transportStatus: {
+			type: String,
+			default: orderTransportStatus.confirm
+		},
+		platform: {
+			type: String,
+			required: true,
+			enum: Object.values(platformList)
+		},
 		orderValue: {
 			type: Number,
 			required: true,
@@ -78,27 +98,6 @@ const OrderSchema = mongoose.Schema(
 		isGift: {
 			type: Boolean,
 			default: false
-		},
-		paymentUrl: {
-			type: String,
-			default: null
-		},
-		orderId: {
-			type: String,
-			index: true
-		},
-		transactionId: {
-			type: String,
-			index: true,
-			default: null
-		},
-		paymentStatus: {
-			type: String,
-			default: orderPaymentStatus[1]
-		},
-		transportStatus: {
-			type: String,
-			default: orderTransportStatus[1]
 		},
 		notes: {
 			type: String,
@@ -109,7 +108,8 @@ const OrderSchema = mongoose.Schema(
 			type: mongoose.Types.ObjectId,
 			ref: 'Coupon',
 			trim: true,
-			default: null
+			default: null,
+			autopopulate: false
 		},
 		isPrepayment: {
 			type: Boolean,
@@ -118,9 +118,10 @@ const OrderSchema = mongoose.Schema(
 		invoice: {
 			type: mongoose.Types.ObjectId,
 			ref: 'Invoice',
-			default: null
+			default: null,
+			autopopulate: false
 		},
-		paymentHistories: [{ type: mongoose.Types.ObjectId, ref: 'paymentHistory'}]
+		paymentHistories: [{ type: mongoose.Types.ObjectId, ref: 'PaymentHistory',autopopulate: true }]
 	},
 	{
 		timestamps: true
@@ -130,6 +131,7 @@ const OrderSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 OrderSchema.plugin(toJSON);
 OrderSchema.plugin(paginate);
+OrderSchema.plugin(autopopulate);
 
 const Order = mongoose.model('Order', OrderSchema);
 module.exports = Order;

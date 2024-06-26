@@ -6,6 +6,8 @@ const productRouter = require('./product.route');
 const blogCategoryRouter = require('./blog_category.route');
 const blogRouter = require('./blog.route');
 const contactRouter = require('./contact.route');
+const orderRouter = require('./order.route');
+const statisticalRouter = require('./statistical.route');
 const verifyToken = require('../../middlewares/verifyToken');
 
 const router = express.Router();
@@ -18,33 +20,41 @@ const routers = [
 	},
 	{
 		path: '/user',
-		route: userRouter,
+		route: userRouter
 	},
 	{
 		path: '/brand',
-		route: brandRouter,
+		route: brandRouter
 	},
 	{
 		path: '/product',
-		route: productRouter,
+		route: productRouter
 	},
 	{
 		path: '/blog-category',
-		route: blogCategoryRouter,
+		route: blogCategoryRouter
 	},
 	{
 		path: '/blog',
-		route: blogRouter,
+		route: blogRouter
 	},
 	{
 		path: '/contact',
-		route: contactRouter,
+		route: contactRouter
+	},
+	{
+		path: '/order',
+		route: orderRouter
+	},
+	{
+		path: '/statistical',
+		route: statisticalRouter
 	}
 ];
 
 routers.forEach(route => {
 	if (!route.ignoreToken) {
-		router.use(route.path,verifyToken, route.route);
+		router.use(route.path, verifyToken, route.route);
 	} else {
 		router.use(route.path, route.route);
 	}

@@ -44,6 +44,7 @@ module.exports = {
 			order_address_city:'Tỉnh thành phố là bắt buộc.',
 			order_address_detail:'Địa chỉ chi tiết là bắt buộc.',
 			order_payment_method:'Phương thức thanh toán là bắt buộc.',
+			order_payment_platform:'Đơn hàng được đặt từ đâu là bắt buộc.',
 			order_value:'Tổng tiền đơn hàng là bắt buộc.',
 			order_product_id:'Id sản phẩm là bắt buộc.',
 		},
@@ -75,6 +76,7 @@ module.exports = {
 			product_capacities:'Dung tích phải là một trong ',
 			product_sex:'Giới tính sử dụng phải là một trong ',
 			order_payment_method:'Phương thức thanh toán không hợp lệ.',
+			order_payment_platform:'Đơn hàng được đặt từ đâu không hợp lệ.',
 			order_product_id:'Id sản phẩm không hợp lệ.',
 		},
 		empty:{
@@ -132,6 +134,7 @@ module.exports = {
 		token_notfound:'Không tìm thấy mã token truy cập.',
 		blog_category_notfound:'Không tìm thấy danh mục bài viết.',
 		blog_notfound:'Không tìm thấy bài viết.',
-		contact_notfound:'Không tìm thấy liên hệ nào.',
+		contact_notfound:'Không tìm thấy liên hệ.',
+		order_notfound:'Không tìm thấy đơn hàng.',
 	}
 };

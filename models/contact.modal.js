@@ -10,9 +10,9 @@ const ContactSchema = mongoose.Schema(
 		name: {
 			type: String,
 			required: true,
-			trim: true,
+			trim: true
 		},
-        email: {
+		email: {
 			type: String,
 			required: true,
 			trim: true,
@@ -23,29 +23,29 @@ const ContactSchema = mongoose.Schema(
 				message: () => messages.validate.format.email
 			}
 		},
-        phone:{
-            type: String,
+		phone: {
+			type: String,
 			required: true,
-            validate: {
+			validate: {
 				validator: function (v) {
 					return validator.isMobilePhone(v);
 				},
 				message: () => messages.validate.format.phone
 			}
-        },
-        content:{
-            type: String,
-            max:2000,
-			required: true,
-        },
+		},
+		content: {
+			type: String,
+			max: 2000,
+			required: true
+		},
 		image: {
 			type: String,
 			required: false
 		},
-        isReply:{
-            type: Boolean,
+		isReply: {
+			type: Boolean,
 			default: false
-        },
+		},
 		deleted: {
 			type: Boolean,
 			default: false
