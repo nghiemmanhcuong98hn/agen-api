@@ -3,7 +3,13 @@ const Order = require('../models/order.modal');
 const Product = require('../models/product.modal');
 const Contact = require('../models/contact.modal');
 const roles = require('../configs/roles');
-const { orderPaymentStatus, orderTransportStatus } = require('../configs/settings');
+const {
+	orderPaymentStatus,
+	orderTransportStatus,
+	filterStatisticalTablesTime
+} = require('../configs/settings');
+const moment = require('moment');
+const { reduceRevenueData, reduceProductSaleData } = require('../utils/reduceRevenueData');
 
 /**
  * @returns {Object}
@@ -27,10 +33,33 @@ const getIntegratedStatistics = async () => {
 	};
 };
 
-const getDataStatisticsTable = async () => {
-	
-}
+/**
+ *
+ * @param {String} time
+ */
+const getDataStatisticsTable = async (time = 'year') => {
+	const revenueData = await Promise.all(
+		filterStatisticalTablesTime[time].map(i => {
+			const startOfMonth = moment().subtract(i, 'months').startOf('month').toDate();
+			const endOfMonth = moment().subtract(i, 'months').endOf('month').toDate();
+			return Order.find({
+				createdAt: {
+					$gte: startOfMonth,
+					$lt: endOfMonth
+				}
+			}).then(orders => {
+				return {
+					totalRevenue: reduceRevenueData(orders),
+					totalProductSale: reduceProductSaleData(orders),
+				};
+			});
+		})
+	);
+
+	return revenueData;
+};
 
 module.exports = {
-      getIntegratedStatistics
-}
+	getIntegratedStatistics,
+	getDataStatisticsTable
+};
