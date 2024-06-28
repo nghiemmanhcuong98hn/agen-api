@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const { toJSON, paginate } = require('./plugins');
 const messages = require('../configs/messages');
-const autopopulate = require('mongoose-autopopulate')
+const autopopulate = require('mongoose-autopopulate');
 const {
 	orderTransportStatus,
 	orderPaymentStatus,
@@ -41,10 +41,10 @@ const OrderSchema = mongoose.Schema(
 		},
 		products: [
 			{
-				productId: {
+				product: {
 					type: mongoose.Types.ObjectId,
 					ref: 'Product',
-					autopopulate: true
+					autopopulate: ['price', 'name']
 				},
 				quantity: {
 					type: Number,
@@ -121,7 +121,9 @@ const OrderSchema = mongoose.Schema(
 			default: null,
 			autopopulate: false
 		},
-		paymentHistories: [{ type: mongoose.Types.ObjectId, ref: 'PaymentHistory',autopopulate: true }]
+		paymentHistories: [
+			{ type: mongoose.Types.ObjectId, ref: 'PaymentHistory', autopopulate: true }
+		]
 	},
 	{
 		timestamps: true

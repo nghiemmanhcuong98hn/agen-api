@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 var mongooseDelete = require('mongoose-delete');
 const { toJSON, paginate } = require('./plugins');
+const autopopulate = require('mongoose-autopopulate');
 const { mongooseDeleteOptions } = require('../configs/settings');
 
 // Define the InvoiceSchema
@@ -19,19 +20,27 @@ const InvoiceSchema = mongoose.Schema(
 			type: String,
 			required: true
 		},
+		customerPhone: {
+			type: String,
+			required: true
+		},
 		products: [
 			{
-				type: mongoose.Types.ObjectId,
-				ref: 'Product'
+				product: {
+					type: mongoose.Types.ObjectId,
+					ref: 'Product',
+					autopopulate: ['name', 'price']
+				},
+				quantity: {
+					type: Number,
+					min: 0,
+					required: true
+				}
 			}
 		],
 		totalAmount: {
 			type: Number,
 			required: true
-		},
-		issuedDate: {
-			type: Date,
-			default: Date.now
 		}
 	},
 	{
@@ -40,8 +49,9 @@ const InvoiceSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-InvoiceSchema.plugin(toJSON);
-InvoiceSchema.plugin(paginate);
+OrderSchema.plugin(toJSON);
+OrderSchema.plugin(paginate);
+OrderSchema.plugin(autopopulate);
 InvoiceSchema.plugin(mongooseDelete, mongooseDeleteOptions);
 
 // Create the Invoice model
