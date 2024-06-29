@@ -49,9 +49,9 @@ const InvoiceSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-OrderSchema.plugin(toJSON);
-OrderSchema.plugin(paginate);
-OrderSchema.plugin(autopopulate);
+InvoiceSchema.plugin(toJSON);
+InvoiceSchema.plugin(paginate);
+InvoiceSchema.plugin(autopopulate);
 InvoiceSchema.plugin(mongooseDelete, mongooseDeleteOptions);
 
 // Create the Invoice model
