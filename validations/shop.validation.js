@@ -50,8 +50,7 @@ const update = {
 			'string.empty': messages.validate.empty.name
 		}),
 		address: Joi.string().required().messages({
-			'any.required': messages.validate.required.address,
-			'string.max': messages.validate.max.address
+			'any.required': messages.validate.required.address
 		}),
 		email: Joi.string().required().email().messages({
 			'string.email': messages.validate.format.email,
@@ -74,6 +73,9 @@ const update = {
 				'string.pattern.base': messages.validate.format.phone,
 				'string.empty': messages.validate.empty.phone
 			}),
+		websiteUrl: Joi.string().required().messages({
+			'any.required': messages.validate.required.shop_website_url
+		}),
 		taxCode: Joi.string(),
 		googleMapUrl: Joi.string(),
 		social: Joi.object({

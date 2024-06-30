@@ -44,14 +44,19 @@ const ShopSchema = mongoose.Schema(
 				message: () => messages.validate.format.email
 			}
 		},
-		taxCode: {
+		websiteUrl: {
 			type: String,
-			default: null
+			required: true
 		},
 		googleMapUrl: {
 			type: String,
 			default: null
 		},
+		taxCode: {
+			type: String,
+			default: null
+		},
+
 		social: {
 			facebookUrl: {
 				type: String,

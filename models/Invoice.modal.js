@@ -24,6 +24,10 @@ const InvoiceSchema = mongoose.Schema(
 			type: String,
 			required: true
 		},
+		customerAddress: {
+			type: String,
+			required: true
+		},
 		products: [
 			{
 				product: {

@@ -49,6 +49,7 @@ module.exports = {
 			order_product_id:'Id sản phẩm là bắt buộc.',
 			shop_name:'Tên cửa hàng là bắt buộc.',
 			shop_name:'Tên cửa hàng là bắt buộc.',
+			shop_website_url:'Link website là bắt buộc.',
 		},
 		format: {
 			email: 'Email không hợp lệ.',
@@ -138,5 +139,6 @@ module.exports = {
 		blog_notfound:'Không tìm thấy bài viết.',
 		contact_notfound:'Không tìm thấy liên hệ.',
 		order_notfound:'Không tìm thấy đơn hàng.',
+		invoice_notfound:'Không tìm thấy hóa đơn.',
 	}
 };
