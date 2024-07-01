@@ -103,10 +103,10 @@
 				<% products.forEach((product,index) => { %>
 				<tr>
 					<td><%= index + 1 %></td>
-					<td><%= product.product.name %></td>
+					<td><%= product.productId.name %></td>
 					<td><%= product.quantity %></td>
-					<td><%= product.product.price %></td>
-					<td><%= product.quantity * product.product.price %></td>
+					<td><%= product.productId.price %></td>
+					<td><%= product.quantity * product.productId.price %></td>
 				</tr>
 				<% }) %>
 			</tbody>

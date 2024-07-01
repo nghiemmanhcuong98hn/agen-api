@@ -1,11 +1,14 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const httpStatus = require('http-status');
+const randomstring = require('randomstring');
 const { default: mongoose } = require('mongoose');
 const Invoice = require('../models/invoice.modal');
 const messages = require('../configs/messages');
 const shopService = require('../services/shop.service');
+const orderService = require('../services/order.service');
 const ApiError = require('../utils/ApiError');
+const { getTotalAmountOrder } = require('../utils/getTotalAmountOrder');
 
 /**
  *
@@ -46,9 +49,45 @@ const exportInvoice = async invoiceId => {
 		customerAddress: invoice?.customerAddress,
 		totalAmount: invoice?.totalAmount
 	});
+	await invoice.updateOne({ isExported: true });
 	return html;
 };
 
+/**
+ *
+ * @param {ObjectId} orderId
+ * @returns {Promise<Invoice>}
+ */
+const createInvoice = async orderId => {
+	const invoiceNumber = randomstring.generate({
+		length: 8,
+		charset: 'numeric'
+	});
+	const order = await orderService.getOrderById(orderId);
+	const invoiceBody = {
+		invoiceNumber,
+		customerName: order?.name,
+		customerEmail: order?.email,
+		customerPhone: order?.phone,
+		customerAddress: order?.address.detail,
+		products: order?.products,
+		totalAmount: getTotalAmountOrder(order?.products)
+	};
+	return await Invoice.create(invoiceBody);
+};
+
+/**
+ * get List Invoice
+ * @param {Object} filter
+ * @param {Object} options
+ * @returns {Promise<Invoice>}
+ */
+const getListInvoice = async (filter, options) => {
+	return Invoice.paginate(filter, options);
+};
+
 module.exports = {
-	exportInvoice
+	exportInvoice,
+	createInvoice,
+	getListInvoice
 };

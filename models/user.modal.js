@@ -5,6 +5,7 @@ var mongooseDelete = require('mongoose-delete');
 const roles = require('../configs/roles');
 const messages = require('../configs/messages');
 const { toJSON, paginate } = require('./plugins');
+const autopopulate = require('mongoose-autopopulate');
 const { mongooseDeleteOptions } = require('../configs/settings');
 
 const UserSchema = mongoose.Schema(
@@ -62,7 +63,11 @@ const UserSchema = mongoose.Schema(
 		deletedAt: {
 			type: Date
 		},
-		deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+		deletedBy: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			autopopulate: { select: 'name' }
+		}
 	},
 	{
 		timestamps: true
@@ -72,6 +77,7 @@ const UserSchema = mongoose.Schema(
 // add plugin that converts mongoose to json
 UserSchema.plugin(toJSON);
 UserSchema.plugin(paginate);
+UserSchema.plugin(autopopulate);
 UserSchema.plugin(mongooseDelete, mongooseDeleteOptions);
 
 UserSchema.statics.isEmailTaken = async function (email) {

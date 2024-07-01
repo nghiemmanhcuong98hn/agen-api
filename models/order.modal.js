@@ -41,10 +41,10 @@ const OrderSchema = mongoose.Schema(
 		},
 		products: [
 			{
-				product: {
+				productId: {
 					type: mongoose.Types.ObjectId,
 					ref: 'Product',
-					autopopulate: ['price', 'name']
+					autopopulate: true
 				},
 				quantity: {
 					type: Number,

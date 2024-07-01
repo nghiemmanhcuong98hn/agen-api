@@ -48,8 +48,8 @@ module.exports = {
 			order_value:'Tổng tiền đơn hàng là bắt buộc.',
 			order_product_id:'Id sản phẩm là bắt buộc.',
 			shop_name:'Tên cửa hàng là bắt buộc.',
-			shop_name:'Tên cửa hàng là bắt buộc.',
-			shop_website_url:'Link website là bắt buộc.',
+			shop_website_url:'Địa chỉ trang web là bắt buộc.',
+			invoice_order_id:'Id của đơn hàng là bắt buộc.',
 		},
 		format: {
 			email: 'Email không hợp lệ.',

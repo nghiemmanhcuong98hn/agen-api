@@ -30,10 +30,10 @@ const InvoiceSchema = mongoose.Schema(
 		},
 		products: [
 			{
-				product: {
+				productId: {
 					type: mongoose.Types.ObjectId,
 					ref: 'Product',
-					autopopulate: ['name', 'price']
+					autopopulate: { select: ['name', 'price'] }
 				},
 				quantity: {
 					type: Number,
@@ -45,6 +45,10 @@ const InvoiceSchema = mongoose.Schema(
 		totalAmount: {
 			type: Number,
 			required: true
+		},
+		isExported: {
+			type: Boolean,
+			default: false
 		}
 	},
 	{

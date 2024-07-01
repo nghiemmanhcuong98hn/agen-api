@@ -9,6 +9,7 @@ const contactRouter = require('./contact.route');
 const orderRouter = require('./order.route');
 const statisticalRouter = require('./statistical.route');
 const shopRouter = require('./shop.route');
+const invoiceRouter = require('./invoice.route');
 const verifyToken = require('../../middlewares/verifyToken');
 
 const router = express.Router();
@@ -54,6 +55,10 @@ const routers = [
 	{
 		path: '/shop',
 		route: shopRouter
+	},
+	{
+		path: '/invoice',
+		route: invoiceRouter
 	}
 ];
 
